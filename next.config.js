@@ -1,4 +1,6 @@
 const path = require('path');
+require('dotenv').config();
+
 
 module.exports = {
   typescript: {
@@ -50,4 +52,5 @@ module.exports = {
       'node_modules/@uswds/uswds/packages',
     ],
   },
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || ''
 };
