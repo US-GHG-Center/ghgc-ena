@@ -21,9 +21,9 @@ const VEDA_OVERRIDE_THEME = {
   },
 
   color: {
-    base: '#2c3e50',
-    primary: '#d83933',
-    link: '#6f3331',
+    base: '#1B1B1B',
+    primary: '#3E4DED',
+    link: '#3E4DED',
     danger: '#FC3D21',
     infographicA: '#fcab10',
     infographicB: '#f4442e',
