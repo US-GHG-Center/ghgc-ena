@@ -3,6 +3,8 @@ require('dotenv').config();
 
 
 module.exports = {
+  output: 'export',
+  trailingSlash: true,
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
