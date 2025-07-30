@@ -1,0 +1,71 @@
+# Deploy the site to AWS S3 on a push to specific branches
+
+name: Deploy
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+env:
+  NODE: 20
+
+jobs:
+  build-n-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Use Node.js ${{ env.NODE }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/package.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Build production
+        env:
+          NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+        run: NEXT_PUBLIC_BASE_PATH="${{ vars.SUBPATH }}" yarn build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          role-session-name: "ghgc-ena-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}-deployment"
+          aws-region: 'us-west-2'
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./out s3://${{ vars.S3_BUCKET }}${{ vars.SUBPATH }} \
+            --cache-control max-age=30,must-revalidate,s-maxage=604800 \
+            --delete
+
+      - name: Request Invalidation to AWS Cloudfront
+        uses: oneyedev/aws-cloudfront-invalidation@v1
+        with:
+          distribution-id: ${{ secrets.CF_DISTRIBUTION_ID }}
+          paths: |
+            ${{ vars.SUBPATH }}*

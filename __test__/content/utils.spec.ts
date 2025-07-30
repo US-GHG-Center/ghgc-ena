@@ -14,7 +14,6 @@ const TestMDXObject = {
 
 test('Parsing adds parent dataset id', () => {
   const parsed = parseAttributes(TestMDXObject);
-  // @ts-expect-error the function is not typed yet
   const layer = parsed.layers[0];
   expect(layer.parentDataset.id).toBe(TestMDXObject.id);
 });
