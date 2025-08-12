@@ -1,6 +1,10 @@
 const path = require('path');
+require('dotenv').config();
+
 
 module.exports = {
+  output: 'export',
+  trailingSlash: true,
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -50,4 +54,5 @@ module.exports = {
       'node_modules/@uswds/uswds/packages',
     ],
   },
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || ''
 };

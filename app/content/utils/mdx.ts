@@ -26,6 +26,47 @@ const DATASET_CONTENT_PATH = path.join(
 
 const md = markdownit();
 
+function addBasepathToInternalLinks(obj) {
+  const basepath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
+  if (!basepath || typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(addBasepathToInternalLinks);
+  }
+
+  const result = { ...obj };
+
+  // Process all string values for internal links
+  Object.keys(result).forEach((key) => {
+    if (typeof result[key] === 'string') {
+      // Handle markdown content with internal links
+      result[key] = result[key].replace(
+        /(?<![a-zA-Z0-9])\/([a-zA-Z0-9][a-zA-Z0-9\/\-_]*)/g,
+        (match, url) => {
+          // Only add basepath to internal links (not external URLs)
+          if (
+            url &&
+            !url.startsWith('http') &&
+            !url.startsWith('mailto:') &&
+            !url.startsWith('tel:') &&
+            !url.startsWith('#')
+          ) {
+            return `${basepath}/${url}`;
+          }
+          return match;
+        },
+      );
+    } else if (typeof result[key] === 'object' && result[key] !== null) {
+      result[key] = addBasepathToInternalLinks(result[key]);
+    }
+  });
+
+  return result;
+};
+
 export function parseAttributes(obj) {
   const mdxData = {
     ...obj,
@@ -70,7 +111,8 @@ export function parseAttributes(obj) {
     );
   };
 
-  return convert(mdxData);
+  const processedData = convert(mdxData);
+  return addBasepathToInternalLinks(processedData);
 }
 
 function getMDXFiles(dir) {
@@ -88,6 +130,7 @@ function getMDXData(dir): ContentMetadata[] {
   return mdxFiles.map((file) => {
     const { content, data } = readMDXFile(path.join(dir, file));
     const parsedData = parseAttributes(data);
+
     const processedData = processTaxonomies(parsedData);
     const slug = path.basename(file, path.extname(file));
 

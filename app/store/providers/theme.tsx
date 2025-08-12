@@ -21,9 +21,9 @@ const VEDA_OVERRIDE_THEME = {
   },
 
   color: {
-    base: '#2c3e50',
-    primary: '#d83933',
-    link: '#6f3331',
+    base: '#1B1B1B',
+    primary: '#3E4DED',
+    link: '#3E4DED',
     danger: '#FC3D21',
     infographicA: '#fcab10',
     infographicB: '#f4442e',
@@ -36,6 +36,7 @@ const VEDA_OVERRIDE_THEME = {
       leadSize: '1.25rem',
       extrabold: '800',
       line: 'inherit',
+      family: '"Public Sans", sans-serif',
       // Increments to the type.base.size for each media breakpoint.
       sizeIncrement: {
         small: '0rem',
@@ -45,7 +46,9 @@ const VEDA_OVERRIDE_THEME = {
       },
     },
     heading: {
+      family: '"DM Sans", sans-serif',
       settings: '"wdth" 100, "wght" 700',
+      weight: '500',
     },
   },
   layout: {
