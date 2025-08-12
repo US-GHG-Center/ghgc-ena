@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { getTransformedDatasetMetadata } from 'app/content/utils/mdx';
+import "app/styles/overrides.scss";
 
 const ExplorationAnalysis = dynamic(
   () => import('./(datasets)/exploration/exploration'),
