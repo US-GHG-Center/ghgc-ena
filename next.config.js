@@ -54,5 +54,17 @@ module.exports = {
       'node_modules/@uswds/uswds/packages',
     ],
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || ''
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+
+  async redirects() {
+    return [
+      {
+        // Match ANY path that has /data-catalog/ in it
+        source: "/:any*/data-catalog/:path*",
+        destination: `${process.env.NEXT_PUBLIC_PORTAL_URL}/data-catalog/:path*`,
+        permanent: false, // true if this is a permanent redirect (301)
+      },
+    ];
+  },
+
 };
