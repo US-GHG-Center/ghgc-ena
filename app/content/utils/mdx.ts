@@ -130,9 +130,10 @@ export function parseAttributes(obj) {
   if (
     processedData &&
     typeof processedData === 'object' &&
-    Array.isArray(processedData.layers)
+    'layers' in processedData &&
+    Array.isArray((processedData as { layers?: unknown }).layers)
   ) {
-    processedData.layers = processedData.layers.map((layer) => {
+    (processedData as { layers: any[] }).layers = ((processedData as { layers: any[] }).layers).map((layer) => {
       if (layer && layer.media) {
         return {
           ...layer,
