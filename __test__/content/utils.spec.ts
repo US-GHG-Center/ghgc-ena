@@ -13,7 +13,9 @@ const TestMDXObject = {
 };
 
 test('Parsing adds parent dataset id', () => {
-  const parsed = parseAttributes(TestMDXObject);
+  const parsed = parseAttributes(TestMDXObject) as typeof TestMDXObject & {
+    layers: Array<typeof TestMDXObject['layers'][number] & { parentDataset: { id: string } }>;
+  };
   const layer = parsed.layers[0];
   expect(layer.parentDataset.id).toBe(TestMDXObject.id);
 });

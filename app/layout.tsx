@@ -40,10 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body>
       <head>
         <link href='https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap' rel='stylesheet' />
       </head>
+      <body>
         <div className='minh-viewport display-flex flex-column'>
           <main id='pagebody' className='flex-fill' tabIndex={-1}>
             {children}
