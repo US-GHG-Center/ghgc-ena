@@ -26,46 +26,48 @@ const DATASET_CONTENT_PATH = path.join(
 
 const md = markdownit();
 
-function addBasepathToInternalLinks(obj) {
-  const basepath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-
-  if (!basepath || typeof obj !== 'object' || obj === null) {
+function addBasepathToInternalLinks(obj, basepath = '') {
+  // No basepath provided
+  if (!basepath) {
     return obj;
   }
 
-  if (Array.isArray(obj)) {
-    return obj.map(addBasepathToInternalLinks);
+  // Handle strings
+  if (typeof obj === 'string') {
+    if (
+      obj.startsWith('/') &&
+      !obj.startsWith('//') &&
+      !obj.includes('://') &&
+      !obj.startsWith('/mailto:') &&
+      !obj.startsWith('/tel:') &&
+      !obj.startsWith('/#')
+    ) {
+      const cleanBase = basepath.replace(/\/+$/, '');
+      return `${cleanBase}${obj}`;
+    } else {
+      return obj;
+    }
   }
 
-  const result = { ...obj };
+  // Handle arrays
+  if (Array.isArray(obj)) {
+    return obj.map((item) => addBasepathToInternalLinks(item, basepath));
+  }
 
-  // Process all string values for internal links
-  Object.keys(result).forEach((key) => {
-    if (typeof result[key] === 'string') {
-      // Handle markdown content with internal links
-      result[key] = result[key].replace(
-        /(?<![a-zA-Z0-9])\/([a-zA-Z0-9][a-zA-Z0-9\/\-_]*)/g,
-        (match, url) => {
-          // Only add basepath to internal links (not external URLs)
-          if (
-            url &&
-            !url.startsWith('http') &&
-            !url.startsWith('mailto:') &&
-            !url.startsWith('tel:') &&
-            !url.startsWith('#')
-          ) {
-            return `${basepath}/${url}`;
-          }
-          return match;
-        },
-      );
-    } else if (typeof result[key] === 'object' && result[key] !== null) {
-      result[key] = addBasepathToInternalLinks(result[key]);
-    }
-  });
+  // Handle objects
+  if (typeof obj === 'object' && obj !== null) {
+    const result = { ...obj };
 
-  return result;
-};
+    Object.keys(result).forEach((key) => {
+      result[key] = addBasepathToInternalLinks(result[key], basepath);
+    });
+
+    return result;
+  }
+
+  // Handle primitives (numbers, booleans, etc.)
+  return obj;
+}
 
 export function parseAttributes(obj) {
   const mdxData = {
@@ -110,9 +112,40 @@ export function parseAttributes(obj) {
       Array.isArray(obj) ? [] : {},
     );
   };
-
   const processedData = convert(mdxData);
-  return addBasepathToInternalLinks(processedData);
+  // Add basepath to processedData.media if it exists
+  if (
+    processedData &&
+    typeof processedData === 'object' &&
+    'media' in processedData &&
+    processedData.media
+  ) {
+    processedData.media = addBasepathToInternalLinks(
+      processedData.media,
+      process.env.NEXT_PUBLIC_BASE_PATH || '',
+    );
+  }
+
+  // Add basepath to processedData.layers[].media if layers exist
+  if (
+    processedData &&
+    typeof processedData === 'object' &&
+    Array.isArray(processedData.layers)
+  ) {
+    processedData.layers = processedData.layers.map((layer) => {
+      if (layer && layer.media) {
+        return {
+          ...layer,
+          media: addBasepathToInternalLinks(
+            layer.media,
+            process.env.NEXT_PUBLIC_BASE_PATH || '',
+          ),
+        };
+      }
+      return layer;
+    });
+  }
+  return processedData;
 }
 
 function getMDXFiles(dir) {
