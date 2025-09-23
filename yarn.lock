@@ -2085,10 +2085,10 @@
   resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.21.3.tgz#2977727d8fc8dfa079112d9f4d4c019110f1732c"
   integrity sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==
 
-"@teamimpact/veda-ui@6.6.4":
-  version "6.6.4"
-  resolved "https://registry.yarnpkg.com/@teamimpact/veda-ui/-/veda-ui-6.6.4.tgz#bbb308adc91710152fab365ebe07a3e0d4a806e5"
-  integrity sha512-QioZUaDci2ANm3AE+nwKJ+7SThzGBJto44Q7sU0CFWZINtnmqLCrzQO0Mh/vc9Jmi6hvR7usC9QFsAq2SQSztg==
+"@teamimpact/veda-ui@^6.16.0-beta.2":
+  version "6.16.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@teamimpact/veda-ui/-/veda-ui-6.16.0-beta.2.tgz#99801054d69fe95902c421f592b6eb8ec28bc879"
+  integrity sha512-6lzCybM5o0YTUf61cHsx9N7XyrRI2rQRi4KnmNQ/lNr8Q57Z38c99HEkXf2gpsbkhlhBOLXDIysEDBF8DyYXuA==
   dependencies:
     "@codemirror/lang-markdown" "^6.1.1"
     "@codemirror/state" "^6.2.1"
@@ -2178,7 +2178,7 @@
     qs-state-hook "^2.0.0"
     react "^18.2.0"
     react-calendar "^5.0.0"
-    react-compare-image "^3.1.0"
+    react-compare-image "~3.1.0"
     react-cool-dimensions "^2.0.7"
     react-dom "^18.2.0"
     react-draggable "^4.4.5"
@@ -7801,12 +7801,10 @@ react-calendar@^5.0.0:
     get-user-locale "^2.2.1"
     warning "^4.0.0"
 
-react-compare-image@^3.1.0:
-  version "3.5.9"
-  resolved "https://registry.yarnpkg.com/react-compare-image/-/react-compare-image-3.5.9.tgz#ade20178623f04c7403366fe209288b9ebb7dbff"
-  integrity sha512-st5oi2B6d3/HD6iAM931p+0hhyXhB6HqaL0k3fnNEZAXaIdJmy8kkxjbsskJSOlGAqCv5CZViXxGr+NDiJhcxQ==
-  dependencies:
-    tiny-invariant "^1.3.3"
+react-compare-image@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/react-compare-image/-/react-compare-image-3.1.0.tgz#effa6dda23fed0700d41f71b5158f75208b61aa7"
+  integrity sha512-47ISXkAx9KXA0rjgbQvaFK5AVbxVwP1XjTQEgsmMDN8bWpONVg/IoYmelRBdMs9gQICQCIw1se/cLENEBwHWlQ==
 
 react-cool-dimensions@^2.0.7:
   version "2.0.7"
@@ -9017,11 +9015,6 @@ tiny-emitter@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
-
-tiny-invariant@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.3.3.tgz#46680b7a873a0d5d10005995eb90a70d74d60127"
-  integrity sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==
 
 tinybench@^2.9.0:
   version "2.9.0"
