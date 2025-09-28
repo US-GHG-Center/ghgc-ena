@@ -34,3 +34,38 @@ export const transformToVedaData = (
   });
   return transformed;
 };
+
+export const mergeDataset = (
+  mdxData: any[],
+  apiData: any[],
+): any[] => {
+  // Both contains a list of datasets with "frontmatter" -> "id" field.
+  // Fetch layers from mdxData and merge with apiData based on id.
+  // [ {"frontmatter": { id: "dataset-1", title: "Dataset 1", ...}, ...}, {...} ]
+  console.log(`MDX Data: ${mdxData}`);
+
+  const mdxDataMap = new Map(mdxData.map((d) => [d.id, d]));
+  
+  const mergedData = apiData.map((apiDataSet) => {
+    const mdxDataSet = mdxDataMap.get(apiDataSet.id);
+
+    if (mdxDataSet) {
+      return {
+        ...mdxDataSet,
+        ...apiDataSet,
+        layers: mdxDataSet.layers || [],
+      };
+    }
+    return mdxDataSet;
+  }
+  );
+
+  // Fetch any datasets that are only in mdxData but not in apiData
+  mdxData.forEach((mdxDataSet) => {
+    if (!apiData.find((apiDataSet) => apiDataSet.id === mdxDataSet.id)) {
+      mergedData.push(mdxDataSet);
+    }
+  });
+
+  return mergedData;
+}
