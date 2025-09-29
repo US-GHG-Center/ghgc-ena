@@ -35,12 +35,12 @@ export const transformToVedaData = (
   return transformed;
 };
 
+
+// Merge Drupal API data with MDX dataset based on ID
 export const mergeDataset = (
   mdxData: any[],
   apiData: any[],
 ): any[] => {
-  
-  console.log(`MDX Data: ${mdxData}`);
 
   const mdxDataMap = new Map(mdxData.map((d) => [d.id, d]));
   
@@ -52,13 +52,14 @@ export const mergeDataset = (
         ...mdxDataSet,
         ...apiDataSet,
         layers: mdxDataSet.layers || [],
+        taxonomy : mdxDataSet.taxonomy || [],
       };
     }
     return mdxDataSet;
   }
   );
 
-  // Fetch any datasets that are only in mdxData but not in apiData
+  // Fetch any datasets that are only in mdxData but not in Drupal API Data
   mdxData.forEach((mdxDataSet) => {
     if (!apiData.find((apiDataSet) => apiDataSet.id === mdxDataSet.id)) {
       mergedData.push(mdxDataSet);
