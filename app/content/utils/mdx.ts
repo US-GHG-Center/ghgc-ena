@@ -160,34 +160,13 @@ function readMDXFile(filePath) {
 }
 
 function getMDXData(dir): ContentMetadata[] {
-  
   const mdxFiles = getMDXFiles(dir);
-  console.log(">>>> Found MDX files:", mdxFiles); 
   return mdxFiles.map((file) => {
-    // for just one file for testing
-    console.log(" Getting MDX data from dir:", dir);
-    const slug = path.basename(file, path.extname(file));
-     if (slug === "micasa-carbonflux-grid-v1") {
-      const jsonPath = path.join(process.cwd(), "app/content/drupal", `${slug}.json`);
-      const raw = fs.readFileSync(jsonPath, "utf-8");
-      const dataset = JSON.parse(raw);
-
-      return {
-        slug,
-        metadata: dataset.frontmatter ?? {},
-        content: dataset.content,
-      } as DatasetWithContent;
-    }
-
-
-
-
     const { content, data } = readMDXFile(path.join(dir, file));
     const parsedData = parseAttributes(data);
-    console.log("📄Getting MDX data from dir:", dir);
 
     const processedData = processTaxonomies(parsedData);
-    // const slug = path.basename(file, path.extname(file));
+    const slug = path.basename(file, path.extname(file));
 
     return {
       metadata: processedData,
@@ -196,6 +175,7 @@ function getMDXData(dir): ContentMetadata[] {
     };
   });
 }
+
 
 function getMDXMetaData(dir: string): ContentMetadata[] {
   const mdxFiles = getMDXFiles(dir);
@@ -224,8 +204,6 @@ export function getDatasetsMetadata(): DatasetMetadata[] {
 }
 
 export function getDatasets(): DatasetWithContent[] {
-    console.log(">>> getDatasets CALLED");
-
   return getMDXData(DATASET_CONTENT_PATH) as DatasetWithContent[];
 }
 
@@ -234,6 +212,5 @@ export function getTransformedDatasetMetadata() {
 }
 
 export function getTransformedDatasets() {
-  console.log(">>> getTransformedDatasets CALLED");
   return transformToDatasetsList(getDatasets());
 }

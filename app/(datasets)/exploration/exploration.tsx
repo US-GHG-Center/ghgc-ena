@@ -15,7 +15,6 @@ export default function ExplorationAnalysis({ datasets }: { datasets: any }) {
   const setExternalDatasets = useSetAtom(externalDatasetsAtom);
 
   setExternalDatasets(datasets);
-  console.log('🗂️ Datasets passed to E&A:', datasets);
 
   const [timelineDatasets, setTimelineDatasets] = useTimelineDatasetAtom();
   const [datasetModalRevealed, setDatasetModalRevealed] = useState(
