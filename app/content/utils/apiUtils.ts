@@ -54,7 +54,12 @@ export default function fetchDatasetMetadata() {
                 ]
             }
         ],
-        "infoDescription": "::markdown\n  - Temporal Extent: January 1, 2001 - Ongoing\n  - Temporal Resolution: Daily and Monthly Averages\n  - Spatial Extent: Global\n  - Spatial Resolution: 0.1° x 0.1°\n  - Data Units: Grams of Carbon per square meter per day (g Carbon/m²/day) \n  - Data Type: Research\n  - Data Latency: Less than a year, typically 6 months\n",
-        "content": "Test content from API"
+    "data_tools": "\u003Ca href=\"/ghgcenter/data-tools/nist-indianapolis-flux-experiment-influx-tower-data-viewer\" hreflang=\"en\"\u003ENIST Indianapolis Flux Experiment (INFLUX) Tower Data Viewer\u003C/a\u003E",
+    "data_type": "Research",
+    "data_units": "Micromoles per mole of dry air (Parts CO₂ per million (ppm)); Nanomoles per mole of dry air (Parts CH₄ per billion (ppb))",
+    "spatial_extent": "Indianapolis, Indiana, United States",
+    "spatial_resolution": "Point location samples",
+    "temporal_extent": "January 1, 2024 - December 31, 2024",
+    "content": "Test content from API"
     }];
 }

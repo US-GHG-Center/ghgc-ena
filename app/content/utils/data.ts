@@ -67,7 +67,16 @@ export const mergeDataset = (
         // Mapping the corresonding fields that are accepted by the DataLayers to be rendered
         name: apiDataSet.title,
         description: apiDataSet.summary,
-
+        infoDescription: {
+            temporal_extent: apiDataSet.temporal_extent ?? null,
+            temporal_resolution: apiDataSet.temporal_resolution ?? null,
+            spatial_extent: apiDataSet.spatial_extent ?? null,
+            spatial_resolution: apiDataSet.spatial_resolution ?? null,
+            data_units: apiDataSet.data_units ?? null,
+            data_type: apiDataSet.data_type ?? null,
+            data_latency: apiDataSet.data_latency ?? null,
+            data_tools: apiDataSet.data_tools ?? null,
+          },
         taxonomy : mdxDataSet.taxonomy , // Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
         
         // taxonomy :  //TBD: Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
