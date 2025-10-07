@@ -1,10 +1,9 @@
 export default function fetchDatasetMetadata() {
     // Simulate fetching data from an API
     return [{
-        "slug": "micasa-carbonflux-daygrid-v1.data",
         "nid": "67",
-        "name": "Drupal API Fetched Test Dataset",
-        "description": "This is a test dataset fetched from a Drupal API endpoint to demonstrate merging with MDX data.",
+        "title": "Drupal API Fetched Test Dataset",
+        "summary": "This is a test dataset fetched from a Drupal API endpoint to demonstrate merging with MDX data.",
         "usage": [
             {
                 "url": "https://us-ghg-center.github.io/ghgc-docs/datausage.html",

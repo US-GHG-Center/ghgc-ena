@@ -54,8 +54,12 @@ export const mergeDataset = (
       usedMdxIds.add(mdxDataSet.id);
       return {
         ...apiDataSet,
+        // Mapping the corresonding fields that are accepted by the DataLayers to be rendered
+        name: apiDataSet.title,
+        description: apiDataSet.summary ,
+        // taxonomy :  //TBD: Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
         layers: mdxDataSet.layers || [],
-        // taxonomy : mdxDataSet.taxonomy || [], TODO: Replace this with subtaxonomy fields from drupal API
+        
       };
     }
     return mdxDataSet;
