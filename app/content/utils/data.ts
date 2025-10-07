@@ -1,5 +1,6 @@
 import type { DatasetData, StoryData, VedaData } from '@lib';
 import type { DatasetMetadata, DatasetWithContent } from 'app/types/content';
+import { mapDrupalToMdxIds } from 'app/content/utils/mapping';
 
 export function processTaxonomies(data): DatasetData | StoryData {
   const updatedTax = data.taxonomy.map((t) => {
@@ -41,18 +42,20 @@ export const mergeDataset = (
   mdxData: any[],
   apiData: any[],
 ): any[] => {
-
+  const idMap = mapDrupalToMdxIds(); // drupal nid → mdx id
   const mdxDataMap = new Map(mdxData.map((d) => [d.id, d]));
-  
+  const usedMdxIds = new Set<string>(); // track used mdx ids
+
   const mergedData = apiData.map((apiDataSet) => {
-    const mdxDataSet = mdxDataMap.get(apiDataSet.id);
+    const mappedID = idMap[apiDataSet.nid];
+    const mdxDataSet = mdxDataMap.get(mappedID);
 
     if (mdxDataSet) {
+      usedMdxIds.add(mdxDataSet.id);
       return {
-        ...mdxDataSet,
         ...apiDataSet,
         layers: mdxDataSet.layers || [],
-        taxonomy : mdxDataSet.taxonomy || [],
+        // taxonomy : mdxDataSet.taxonomy || [], TODO: Replace this with subtaxonomy fields from drupal API
       };
     }
     return mdxDataSet;
@@ -61,7 +64,7 @@ export const mergeDataset = (
 
   // Fetch any datasets that are only in mdxData but not in Drupal API Data
   mdxData.forEach((mdxDataSet) => {
-    if (!apiData.find((apiDataSet) => apiDataSet.id === mdxDataSet.id)) {
+    if (!usedMdxIds.has(mdxDataSet.id)) {
       mergedData.push(mdxDataSet);
     }
   });

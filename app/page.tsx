@@ -17,7 +17,6 @@ export default function Page() {
   const datasets: any[] = getTransformedDatasetMetadata();
   const apiDataset = fetchDatasetMetadata();
   const mergedDatasets = mergeDataset(datasets, apiDataset);
-  console.log('Merged Datasets:', datasets);
   
   return (
     <section>

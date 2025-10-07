@@ -104,7 +104,6 @@ export const components = {
 };
 
 export function CustomMDX(props: any) {
-  console.log(">>>> Rendering from MDX file");
   const datasets = getDatasetsMetadata();
   return (
     <Providers datasets={datasets}>
