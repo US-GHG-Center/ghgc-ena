@@ -1,6 +1,14 @@
 import type { DatasetData, StoryData, VedaData } from '@lib';
 import type { DatasetMetadata, DatasetWithContent } from 'app/types/content';
 import { mapDrupalToMdxIds } from 'app/content/utils/mapping';
+import { getDrupalDatasets } from './drupal';
+
+
+// Printing the response for now, will remove later and connect to the merge function after finalizing the transformation logic for fields in drupal and mdx
+(async () => {
+  const drupalData = await getDrupalDatasets();
+  console.log('Drupal data:', JSON.stringify(drupalData, null, 2));
+})();
 
 export function processTaxonomies(data): DatasetData | StoryData {
   const updatedTax = data.taxonomy.map((t) => {
@@ -46,6 +54,8 @@ export const mergeDataset = (
   const mdxDataMap = new Map(mdxData.map((d) => [d.id, d]));
   const usedMdxIds = new Set<string>(); // track used mdx ids
 
+
+
   const mergedData = apiData.map((apiDataSet) => {
     const mappedID = idMap[apiDataSet.nid];
     const mdxDataSet = mdxDataMap.get(mappedID);
@@ -56,7 +66,10 @@ export const mergeDataset = (
         ...apiDataSet,
         // Mapping the corresonding fields that are accepted by the DataLayers to be rendered
         name: apiDataSet.title,
-        description: apiDataSet.summary ,
+        description: apiDataSet.summary,
+
+        taxonomy : mdxDataSet.taxonomy , // Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
+        
         // taxonomy :  //TBD: Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
         layers: mdxDataSet.layers || [],
         
