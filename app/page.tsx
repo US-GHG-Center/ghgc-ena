@@ -4,6 +4,7 @@ import { getTransformedDatasetMetadata } from 'app/content/utils/mdx';
 import "app/styles/overrides.scss";
 import fetchDatasetMetadata from './content/utils/apiUtils';
 import { mergeDataset } from './content/utils/data';
+import { getDrupalDatasets } from './content/utils/drupal';
 
 const ExplorationAnalysis = dynamic(
   () => import('./(datasets)/exploration/exploration'),
@@ -13,10 +14,13 @@ const ExplorationAnalysis = dynamic(
   },
 );
 
-export default function Page() {
-  const datasets: any[] = getTransformedDatasetMetadata();
-  const apiDataset = fetchDatasetMetadata();
-  const mergedDatasets = mergeDataset(datasets, apiDataset);
+export default async function Page() {
+  const mdxDatasets: any[] = getTransformedDatasetMetadata();
+  // const apiDataset = fetchDatasetMetadata(); // sample API response for mock
+  const apiDataset = await getDrupalDatasets();
+  
+
+  const mergedDatasets = mergeDataset(mdxDatasets, apiDataset);
   
   return (
     <section>
