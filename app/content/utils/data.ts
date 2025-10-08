@@ -2,6 +2,7 @@ import type { DatasetData, StoryData, VedaData } from '@lib';
 import type { DatasetMetadata, DatasetWithContent } from 'app/types/content';
 import { mapDrupalToMdxIds } from 'app/content/utils/mapping';
 import { getDrupalDatasets } from './drupal';
+import { info } from 'console';
 
 
 // Printing the response for now, will remove later and connect to the merge function after finalizing the transformation logic for fields in drupal and mdx
@@ -50,50 +51,61 @@ export const mergeDataset = (
   mdxData: any[],
   apiData: any[],
 ): any[] => {
+
   const idMap = mapDrupalToMdxIds(); // drupal nid → mdx id
-  const mdxDataMap = new Map(mdxData.map((d) => [d.id, d]));
-  const usedMdxIds = new Set<string>(); // track used mdx ids
+  const apiDataByMdxId = {};
 
+  // iterate all drupal records and create a map of mdxid → drupal record
+  /* Example:
+  {
+  "micasa-carbonflux-grid-v1": { nid: "67", title: "...", ... },
+  "blackmarble-radiance-daygrid-v2nrt": { nid: "111", title: "...", ... },
+  }
+  */
 
+  for (const apiDataSet of apiData) {
+    const mdxId = idMap?.[apiDataSet?.nid];
+    if (mdxId) apiDataByMdxId[mdxId] = apiDataSet;
+  }
 
-  const mergedData = apiData.map((apiDataSet) => {
-    const mappedID = idMap[apiDataSet.nid];
-    const mdxDataSet = mdxDataMap.get(mappedID);
+  return mdxData.map((mdxDataSet: any) => {
+    const apiDataSet = apiDataByMdxId[mdxDataSet.id];
+    if (!apiDataSet) return mdxDataSet;
 
-    if (mdxDataSet) {
-      usedMdxIds.add(mdxDataSet.id);
       return {
+        ...mdxDataSet,
         ...apiDataSet,
         // Mapping the corresonding fields that are accepted by the DataLayers to be rendered
         name: apiDataSet.title,
         description: apiDataSet.summary,
-        infoDescription: {
-            temporal_extent: apiDataSet.temporal_extent ?? null,
-            temporal_resolution: apiDataSet.temporal_resolution ?? null,
-            spatial_extent: apiDataSet.spatial_extent ?? null,
-            spatial_resolution: apiDataSet.spatial_resolution ?? null,
-            data_units: apiDataSet.data_units ?? null,
-            data_type: apiDataSet.data_type ?? null,
-            data_latency: apiDataSet.data_latency ?? null,
-            data_tools: apiDataSet.data_tools ?? null,
-          },
+        infoDescription: getInfoDescription(apiDataSet),
         taxonomy : mdxDataSet.taxonomy , // Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
-        
         // taxonomy :  //TBD: Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
         layers: mdxDataSet.layers || [],
         
       };
     }
-    return mdxDataSet;
+    )
   }
-  );
 
-  // Fetch any datasets that are only in mdxData but not in Drupal API Data
-  mdxData.forEach((mdxDataSet) => {
-    if (!usedMdxIds.has(mdxDataSet.id)) {
-      mergedData.push(mdxDataSet);
-    }
-  });
+  // Helper function to format infoDescription from API data
+  function getInfoDescription(apiDataSet = {}) {
+    const fields = [
+      { label: 'Temporal Extent', key: 'temporal_extent' },
+      { label: 'Temporal Resolution', key: 'temporal_resolution' },
+      { label: 'Spatial Extent', key: 'spatial_extent' },
+      { label: 'Spatial Resolution', key: 'spatial_resolution' },
+      { label: 'Data Units', key: 'data_units' },
+      { label: 'Data Type', key: 'data_type' },
+      { label: 'Data Tools', key: 'data_tools' },
+      { label: 'Data License', key: 'data_license' },
+    ];
 
-  return mergedData;
-}
+    const listItems = fields
+      .filter(({ key }) => Object.prototype.hasOwnProperty.call(apiDataSet, key))
+      .map(({ label, key }) => `<li>${label}: ${apiDataSet[key]}</li>`)
+      .join('\n');
+
+    return `<ul>\n${listItems}\n</ul>`;
+  }
+

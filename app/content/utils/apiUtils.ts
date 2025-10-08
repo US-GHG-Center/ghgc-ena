@@ -60,6 +60,6 @@ export default function fetchDatasetMetadata() {
     "spatial_extent": "Indianapolis, Indiana, United States",
     "spatial_resolution": "Point location samples",
     "temporal_extent": "January 1, 2024 - December 31, 2024",
-    "content": "Test content from API"
+    "temporal_resolution": "Continuous measurements: daily, monthly; Non-continuous measurements: varies"
     }];
 }
