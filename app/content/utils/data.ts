@@ -1,15 +1,7 @@
 import type { DatasetData, StoryData, VedaData } from '@lib';
 import type { DatasetMetadata, DatasetWithContent } from 'app/types/content';
-import { mapDrupalToMdxIds } from 'app/content/utils/mapping';
-import { getDrupalDatasets } from './drupal';
+import { mapDrupalToMdxIds } from './mapping';
 import { info } from 'console';
-
-
-// Printing the response for now, will remove later and connect to the merge function after finalizing the transformation logic for fields in drupal and mdx
-(async () => {
-  const drupalData = await getDrupalDatasets();
-  console.log('Drupal data:', JSON.stringify(drupalData, null, 2));
-})();
 
 export function processTaxonomies(data): DatasetData | StoryData {
   const updatedTax = data.taxonomy.map((t) => {
@@ -49,9 +41,8 @@ export const transformToVedaData = (
 // Merge Drupal API data with MDX dataset based on ID
 export const mergeDataset = (
   mdxData: any[],
-  apiData: any[],
+  apiData: any[]
 ): any[] => {
-
   const idMap = mapDrupalToMdxIds(); // drupal nid → mdx id
   const apiDataByMdxId = {};
 
@@ -67,11 +58,11 @@ export const mergeDataset = (
     const mdxId = idMap?.[apiDataSet?.nid];
     if (mdxId) apiDataByMdxId[mdxId] = apiDataSet;
   }
-
+  
   return mdxData.map((mdxDataSet: any) => {
     const apiDataSet = apiDataByMdxId[mdxDataSet.id];
     if (!apiDataSet) return mdxDataSet;
-
+    const apiTaxonomy = apiDataSet ? buildDrupalTaxonomy(apiDataSet) : [];
       return {
         ...mdxDataSet,
         ...apiDataSet,
@@ -79,8 +70,7 @@ export const mergeDataset = (
         name: apiDataSet.title,
         description: apiDataSet.summary,
         infoDescription: getInfoDescription(apiDataSet),
-        taxonomy : mdxDataSet.taxonomy , // Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
-        // taxonomy :  //TBD: Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
+        taxonomy : apiTaxonomy,//Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
         layers: mdxDataSet.layers || [],
         
       };
@@ -108,4 +98,48 @@ export const mergeDataset = (
 
     return `<ul>\n${listItems}\n</ul>`;
   }
+
+// Helper: extract anchor text from HTML or comma-separated string 
+function extractLinksFromHtml(htmlString: string): { id: string; name: string }[] {
+  if (!htmlString) return [];
+
+  const regex = /<a[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/gi;
+  const results: { id: string; name: string }[] = [];
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(htmlString)) !== null) {
+    const href = match[1];
+    const name = match[2]?.trim() ?? '';
+
+    // Extract the last path segment as ID (slug)
+    const id = href.split('/').filter(Boolean).pop() || name.toLowerCase().replace(/\s+/g, '_');
+    results.push({ id, name });
+  }
+
+  return results;
+}
+
+export function buildDrupalTaxonomy(drupalData: any) {
+  // Only include topics, sectors, scale, and gas
+  const fields = [
+    { key: 'topics', label: 'Topics' },
+    { key: 'sectors', label: 'Sectors' },
+    { key: 'scale', label: 'Scale' },
+    { key: 'gas', label: 'Gas' },
+  ];
+
+  const taxonomy = fields.map(({ key, label }) => {
+    // Only extract values if they exist in drupalData
+    const values = drupalData[key] ? extractLinksFromHtml(drupalData[key]) : [];
+    return {
+      name: label,
+      values, // already [{ id, name }]
+    };
+  });
+
+  //filter out empty ones
+  return taxonomy.filter((t) => t.values.length > 0);
+}
+
+
 
