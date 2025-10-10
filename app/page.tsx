@@ -15,11 +15,8 @@ const ExplorationAnalysis = dynamic(
 
 export default async function Page() {
   const mdxDatasets: any[] = getTransformedDatasetMetadata();
-  // const apiDataset = fetchDatasetMetadata(); // sample API response for mock
   const apiDataset = await getDrupalDatasets();
   console.log(apiDataset);
-  
-
   const mergedDatasets = mergeDataset(mdxDatasets, apiDataset);
   
   return (

@@ -5,12 +5,6 @@ import { getDrupalDatasets } from './drupal';
 import { info } from 'console';
 
 
-// // Printing the response for now, will remove later and connect to the merge function after finalizing the transformation logic for fields in drupal and mdx
-// (async () => {
-//   const drupalData = await getDrupalDatasets();
-//   console.log('Drupal data:', JSON.stringify(drupalData, null, 2));
-// })();
-
 export function processTaxonomies(data): DatasetData | StoryData {
   const updatedTax = data.taxonomy.map((t) => {
     const updatedVals = t.values.map((v) => {
