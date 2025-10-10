@@ -74,7 +74,7 @@ export const mergeDataset = (
 
       return {
         ...mdxDataSet,
-        // ...apiDataSet,
+        ...apiDataSet,
         // Mapping the corresonding fields that are accepted by the DataLayers to be rendered
         name: apiDataSet.title,
         description: apiDataSet.summary,
