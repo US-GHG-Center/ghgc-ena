@@ -14,11 +14,9 @@ const ExplorationAnalysis = dynamic(
 );
 
 export default async function Page() {
-  const mdxDatasets: any[] = getTransformedDatasetMetadata();
+  const datasets: any[] = getTransformedDatasetMetadata();
   const apiDataset = await getDrupalDatasets();
-  console.log(apiDataset);
-  const mergedDatasets = mergeDataset(mdxDatasets, apiDataset);
-  
+  const mergedDatasets = mergeDataset(datasets, apiDataset);
   return (
     <section>
       <ExplorationAnalysis datasets={mergedDatasets} />
