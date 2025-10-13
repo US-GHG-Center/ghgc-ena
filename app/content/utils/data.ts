@@ -86,8 +86,6 @@ export const mergeDataset = (
       { label: 'Spatial Extent', key: 'spatial_extent' },
       { label: 'Spatial Resolution', key: 'spatial_resolution' },
       { label: 'Data Units', key: 'data_units' },
-      { label: 'Data Type', key: 'data_type' },
-      { label: 'Data Tools', key: 'data_tools' },
       { label: 'Data License', key: 'data_license' },
     ];
 
