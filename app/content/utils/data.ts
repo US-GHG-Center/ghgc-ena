@@ -121,9 +121,9 @@ export function buildDrupalTaxonomy(drupalData: any) {
   // Only include topics, sectors, scale, and gas
   const fields = [
     { key: 'topics', label: 'Topics' },
-    { key: 'sectors', label: 'Sectors' },
-    { key: 'scale', label: 'Scale' },
     { key: 'gas', label: 'Gas' },
+    { key: 'scale', label: 'Scale' },
+    { key: 'sectors', label: 'Sectors' },    
   ];
 
   const taxonomy = fields.map(({ key, label }) => {
@@ -134,10 +134,6 @@ export function buildDrupalTaxonomy(drupalData: any) {
       values, // already [{ id, name }]
     };
   });
-
   //filter out empty ones
   return taxonomy.filter((t) => t.values.length > 0);
 }
-
-
-
