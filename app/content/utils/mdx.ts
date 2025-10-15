@@ -176,6 +176,7 @@ function getMDXData(dir): ContentMetadata[] {
   });
 }
 
+
 function getMDXMetaData(dir: string): ContentMetadata[] {
   const mdxFiles = getMDXFiles(dir);
   return mdxFiles.map((file) => {
