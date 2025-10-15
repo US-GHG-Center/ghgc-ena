@@ -4,28 +4,34 @@ import { mapDrupalToMdxIds } from './mapping';
 export async function getDrupalDatasets(): Promise<any[]> {
   const { DRUPAL_API_URL, DRUPAL_USERNAME, DRUPAL_PASSWORD } = process.env;
 
-  if (!DRUPAL_API_URL || !DRUPAL_USERNAME || !DRUPAL_PASSWORD)
-    throw new Error('Missing DRUPAL_* environment variables in .env.local');
+  if (!DRUPAL_API_URL) {
+    console.warn('Missing DRUPAL_API_URL in .env.local — skipping Drupal fetch.');
+    return [];
+  }
 
-  const authHeader = `Basic ${Buffer.from(`${DRUPAL_USERNAME}:${DRUPAL_PASSWORD}`).toString('base64')}`;
-  
+  // Prepare headers (Auth optional)
+  const headers: Record<string, string> = { Accept: 'application/json' };
+  if (DRUPAL_USERNAME && DRUPAL_PASSWORD) {
+    const authHeader = `Basic ${Buffer.from(`${DRUPAL_USERNAME}:${DRUPAL_PASSWORD}`).toString('base64')}`;
+    headers.Authorization = authHeader;
+  }
+
   try {
-    const response = await fetch(DRUPAL_API_URL, {
-      headers: { Authorization: authHeader, Accept: 'application/json' },
-    });
+    // Try fetching from Drupal (with or without credentials)
+    const response = await fetch(DRUPAL_API_URL, { headers });
 
-    if (!response.ok)
-      throw new Error(`Drupal fetch failed: ${response.status} ${response.statusText}`);
+    if (!response.ok) {
+      console.warn(`Drupal fetch failed: ${response.status} ${response.statusText}`);
+      return [];
+    }
 
     const data: any[] = await response.json();
     const validNids = new Set(Object.keys(mapDrupalToMdxIds()));
 
-    return data.filter((record: any) => validNids.has(String(record.nid).trim()));
-  } catch (error) {
-    // Log the error
-    console.error('Error fetching Drupal datasets:', error.message);
-    
-    // Return an empty JSON array if an error occurs
+    return data.filter((record: any) => validNids.has(String(record?.nid ?? '').trim()));
+
+  } catch (error: any) {
+    // Return an empty JSON array if an error occurs (fallback to MDX)
     return [];
   }
 }
