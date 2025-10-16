@@ -50,9 +50,8 @@ jobs:
           NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
           NEXT_DRUPAL_USERNAME: ${{ secrets.NEXT_DRUPAL_USERNAME }}
           NEXT_DRUPAL_PASSWORD: ${{ secrets.NEXT_DRUPAL_PASSWORD }}
-          NEXT_DRUPAL_API_URL: ${{ secrets.NEXT_DRUPAL_API_URL }}
+          NEXT_DRUPAL_API_URL: ${{ vars.NEXT_DRUPAL_API_URL }}
           NEXT_USE_DRUPAL_API: ${{ vars.NEXT_USE_DRUPAL_API }}
-
         run: NEXT_PUBLIC_BASE_PATH="${{ vars.SUBPATH }}" yarn build
 
       - name: Configure AWS Credentials
