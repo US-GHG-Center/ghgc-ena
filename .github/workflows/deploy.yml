@@ -48,6 +48,9 @@ jobs:
       - name: Build production
         env:
           NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+          NEXT_DRUPAL_USERNAME: ${{ secrets.NEXT_DRUPAL_USERNAME }}
+          NEXT_DRUPAL_PASSWORD: ${{ secrets.NEXT_DRUPAL_PASSWORD }}
+          NEXT_DRUPAL_API_URL: ${{ secrets.NEXT_DRUPAL_API_URL }}
         run: NEXT_PUBLIC_BASE_PATH="${{ vars.SUBPATH }}" yarn build
 
       - name: Configure AWS Credentials
