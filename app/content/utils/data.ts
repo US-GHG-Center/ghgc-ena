@@ -61,7 +61,7 @@ export const mergeDataset = (
   
   return mdxData.map((mdxDataSet: any) => {
     const apiDataSet = apiDataByMdxId[mdxDataSet.id];
-    if (!apiDataSet) return mdxDataSet;
+    if (!apiDataSet) return mdxDataSet; 
     const apiTaxonomy = apiDataSet ? buildDrupalTaxonomy(apiDataSet) : [];
       return {
         ...mdxDataSet,
@@ -118,12 +118,10 @@ function extractLinksFromHtml(htmlString: string): { id: string; name: string }[
 }
 
 export function buildDrupalTaxonomy(drupalData: any) {
-  // Only include topics, sectors, scale, and gas
+  // Only include scale, and gas 
   const fields = [
-    { key: 'topics', label: 'Topics' },
-    { key: 'gas', label: 'Gas' },
-    { key: 'scale', label: 'Scale' },
-    { key: 'sectors', label: 'Sectors' },    
+    { key: 'gas', label: 'Atmospheric Constituent' },
+    { key: 'scale', label: 'Geographic Scale' },  
   ];
 
   const taxonomy = fields.map(({ key, label }) => {
