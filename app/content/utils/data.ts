@@ -64,7 +64,7 @@ export const mergeDataset = (
     if (!apiDataSet) return mdxDataSet;
     const apiTaxonomy = apiDataSet ? buildDrupalTaxonomy(apiDataSet) : [];
     // Merge taxonomy from both sources (gas from Drupal, scale from MDX)
-    const mergeddata = mergeMdxAndApiTaxonomy(mdxDataSet, apiTaxonomy);
+    const mergedTaxonomy = mergeMdxAndApiTaxonomy(mdxDataSet, apiTaxonomy);
       return {
         ...mdxDataSet,
         ...apiDataSet,
@@ -72,7 +72,7 @@ export const mergeDataset = (
         name: apiDataSet.title,
         description: apiDataSet.summary,
         infoDescription: getInfoDescription(apiDataSet),
-        taxonomy : mergeddata, 
+        taxonomy : mergedTaxonomy, 
         layers: mdxDataSet.layers || [],
         
       };
