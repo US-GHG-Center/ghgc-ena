@@ -28,8 +28,9 @@ const VEDA_OVERRIDE_THEME = {
     infographicA: '#fcab10',
     infographicB: '#f4442e',
     infographicC: '#b62b6e',
-    infographicD: '#2ca58d',
+    infographicD: '#8a54525b',
     infographicE: '#2276ac',
+    infographicF: '#28730d'
   },
   type: {
     base: {
