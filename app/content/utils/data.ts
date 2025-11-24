@@ -63,6 +63,8 @@ export const mergeDataset = (
     const apiDataSet = apiDataByMdxId[mdxDataSet.id];
     if (!apiDataSet) return mdxDataSet;
     const apiTaxonomy = apiDataSet ? buildDrupalTaxonomy(apiDataSet) : [];
+    // Merge taxonomy from both sources (gas from Drupal, scale from MDX)
+    const mergedTaxonomy = mergeMdxAndApiTaxonomy(mdxDataSet, apiTaxonomy);
       return {
         ...mdxDataSet,
         ...apiDataSet,
@@ -70,7 +72,7 @@ export const mergeDataset = (
         name: apiDataSet.title,
         description: apiDataSet.summary,
         infoDescription: getInfoDescription(apiDataSet),
-        taxonomy : apiTaxonomy,//Populate taxonomy fields from API's subfields, gas, scale, sectors, topics
+        taxonomy : mergedTaxonomy, 
         layers: mdxDataSet.layers || [],
         
       };
@@ -118,10 +120,12 @@ function extractLinksFromHtml(htmlString: string): { id: string; name: string }[
 }
 
 export function buildDrupalTaxonomy(drupalData: any) {
-  // Only include scale, and gas
+  // Only all the taxonomy fields
   const fields = [
     { key: 'gas', label: 'Atmospheric Constituent' },
-    { key: 'scale', label: 'Geographic Scale' },  
+    { key: 'scale', label: 'Geographic Scale' },
+    { key: 'sectors', label: 'Sectors' },
+    { key: 'topics', label: 'Topics' }
   ];
 
   const taxonomy = fields.map(({ key, label }) => {
@@ -132,6 +136,34 @@ export function buildDrupalTaxonomy(drupalData: any) {
       values, // already [{ id, name }]
     };
   });
-  //filter out empty ones
+  // filter out empty ones
   return taxonomy.filter((t) => t.values.length > 0);
 }
+
+// Merge taxonomy entries from MDX and Drupal API (gas from Drupal, scale from MDX)
+export function mergeMdxAndApiTaxonomy(mdxDataSet: any, apiTaxonomy: any) {
+  // Get the "scale" entry from MDX
+  const scaleEntry = mdxDataSet?.taxonomy?.find((item: any) => item.name?.toLowerCase() === "scale");
+
+  // Rename to "Geographic Scale" if found
+  const renamedScaleEntry = scaleEntry
+    ? { ...scaleEntry, name: "Geographic Scale" }
+    : null;
+
+   // Get the "gas" (Atmospheric Constituent) entry from Drupal API
+  const gasEntry = Array.isArray(apiTaxonomy)
+    ? apiTaxonomy.find(
+        (item: any) =>
+          item.key === "gas" || item.name === "Atmospheric Constituent"
+      )
+    : null;
+
+  // Merge the two entries into a new array
+  const merged = [
+    ...(renamedScaleEntry ? [renamedScaleEntry] : []),
+    ...(gasEntry ? [gasEntry] : []),
+  ];
+
+  return merged;
+}
+
