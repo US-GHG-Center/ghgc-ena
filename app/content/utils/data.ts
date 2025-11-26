@@ -140,10 +140,11 @@ export function buildDrupalTaxonomy(drupalData: any) {
   return taxonomy.filter((t) => t.values.length > 0);
 }
 
-// Merge taxonomy entries from MDX and Drupal API (gas from Drupal, scale from MDX)
+// Merge taxonomy entries from MDX and Drupal API (gas from Drupal, scale and source from MDX)
 export function mergeMdxAndApiTaxonomy(mdxDataSet: any, apiTaxonomy: any) {
   // Get the "scale" entry from MDX
   const scaleEntry = mdxDataSet?.taxonomy?.find((item: any) => item.name?.toLowerCase() === "scale");
+  const sourceEntry = mdxDataSet?.taxonomy?.find((item: any) => item.name?.toLowerCase() === "source");
 
   // Rename to "Geographic Scale" if found
   const renamedScaleEntry = scaleEntry
@@ -162,6 +163,7 @@ export function mergeMdxAndApiTaxonomy(mdxDataSet: any, apiTaxonomy: any) {
   const merged = [
     ...(renamedScaleEntry ? [renamedScaleEntry] : []),
     ...(gasEntry ? [gasEntry] : []),
+    ...(sourceEntry ? [sourceEntry] : []),
   ];
 
   return merged;
