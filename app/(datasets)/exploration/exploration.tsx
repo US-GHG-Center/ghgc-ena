@@ -1,7 +1,9 @@
 'use client';
 import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   ExplorationAndAnalysis,
+  EmbeddedExploration,
   DatasetSelectorModal,
   useTimelineDatasetAtom,
   externalDatasetsAtom,
@@ -20,7 +22,9 @@ export default function ExplorationAnalysis({ datasets }: { datasets: any }) {
   const [datasetModalRevealed, setDatasetModalRevealed] = useState(
     !timelineDatasets.length,
   );
-
+  const searchParams = useSearchParams();
+  const isEmbed= searchParams.get('embed')==='true'; 
+ 
   const openModal = () => {
     setDatasetModalRevealed(true);
   };
@@ -43,18 +47,21 @@ export default function ExplorationAnalysis({ datasets }: { datasets: any }) {
           height: `calc(100vh - ${offsetHeight}px)`,
         }}
       >
-        <DatasetSelectorModal
-          revealed={datasetModalRevealed}
-          close={closeModal}
-          timelineDatasets={timelineDatasets}
-          setTimelineDatasets={setTimelineDatasets}
-          datasets={datasets}
-        />
-        <ExplorationAndAnalysis
+        {(isEmbed && timelineDatasets?.length > 0) ? <EmbeddedExploration datasets={timelineDatasets} /> :
+          (<>
+            <DatasetSelectorModal
+              revealed={datasetModalRevealed}
+              close={closeModal}
+              timelineDatasets={timelineDatasets}
+              setTimelineDatasets={setTimelineDatasets}
+              datasets={datasets}
+            />
+            <ExplorationAndAnalysis
           datasets={timelineDatasets}
           setDatasets={setTimelineDatasets}
           openDatasetsSelectionModal={openModal}
         />
+        </>)} 
       </div>
     </Providers>
   );
