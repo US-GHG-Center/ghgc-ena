@@ -23,7 +23,7 @@ export default function ExplorationAnalysis({ datasets }: { datasets: any }) {
     !timelineDatasets.length,
   );
   const searchParams = useSearchParams();
-  const isEmbed= searchParams.get('embed')==='true'; 
+  const isEmbed = searchParams.get('embed')==='true'; 
  
   const openModal = () => {
     setDatasetModalRevealed(true);
