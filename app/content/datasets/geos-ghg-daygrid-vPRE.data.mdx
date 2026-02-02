@@ -36,9 +36,6 @@ taxonomy:
     values:
       - Satellite Observations
       - Model Output
-  - name: Scale
-    values:
-      - Global
 infoDescription: |
   ::markdown
     - Temporal Extent: January 1, 2015 – Ongoing      
@@ -50,7 +47,7 @@ infoDescription: |
     - Data Latency: 2-3 months        
 layers:
   - id: geos-ghg-daygrid-vPRE-xco2
-    stacCol: geos-ghg-daygrid-vPRE
+    stacCol: geos-co2-daygrid-vPRE
     name: Average Dry-Air Column CO₂ (XCO₂)
     type: raster
     description: Daily average column concentrations of carbon dioxide derived from satellite data.
@@ -100,7 +97,7 @@ layers:
       alt: OCO-2 GEOS Column CO₂ Concentrations - Average Dry-Air Column CO₂ (XCO₂)
 
   - id: geos-ghg-daygrid-vPRE-xch4
-    stacCol: geos-ghg-daygrid-vPRE
+    stacCol: geos-co-ch4-daygrid-vPRE
     name: Average Dry-Air Column CH₄ (XCH₄)
     type: raster
     description: Daily average column concentrations of methane derived from satellite data.
@@ -147,10 +144,10 @@ layers:
       unit: ppb        
     media:
       src: /images/dataset/geos-xch4.png
-      alt: OCO-2 GEOS Column CO₂ Concentrations - Average Dry-Air Column CO₂ (XCO₂)
+      alt: OCO-2 GEOS Column XCH₄ Concentrations - Average Dry-Air Column XCH₄ (XCH₄)
 
   - id: geos-ghg-daygrid-vPRE-xco
-    stacCol: geos-ghg-daygrid-vPRE
+    stacCol: geos-co-ch4-daygrid-vPRE
     name: Average Dry-Air Column CO (XCO)
     type: raster
     description: Daily average column concentrations of carbon monoxide derived from satellite data.
