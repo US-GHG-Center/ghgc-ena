@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   ExplorationAndAnalysis,
-  EmbeddedExploration,
+  ExplorationAndAnalysisSimpleView,
   DatasetSelectorModal,
   useTimelineDatasetAtom,
   externalDatasetsAtom,
@@ -23,7 +23,7 @@ export default function ExplorationAnalysis({ datasets }: { datasets: any }) {
     !timelineDatasets.length,
   );
   const searchParams = useSearchParams();
-  const isEmbed = searchParams.get('embed')==='true'; 
+  const simpleMode = searchParams.get('viewMode')==='simple';
  
   const openModal = () => {
     setDatasetModalRevealed(true);
@@ -47,7 +47,7 @@ export default function ExplorationAnalysis({ datasets }: { datasets: any }) {
           height: `calc(100vh - ${offsetHeight}px)`,
         }}
       >
-        {(isEmbed && timelineDatasets?.length > 0) ? <EmbeddedExploration datasets={timelineDatasets} /> :
+        {(simpleMode && timelineDatasets?.length > 0) ? <ExplorationAndAnalysisSimpleView datasets={timelineDatasets} /> :
           (<>
             <DatasetSelectorModal
               revealed={datasetModalRevealed}

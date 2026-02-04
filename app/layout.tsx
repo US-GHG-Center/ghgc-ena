@@ -8,15 +8,15 @@ import '@teamimpact/veda-ui/lib/main.css';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl ?? ''),
   title: {
-    default: 'Next.js VEDA Template Instance',
-    template: '%s | Next.js VEDA Template Instance',
+    default: 'Visual Exploration and Analysis Tool',
+    template: '%s | Visual Exploration and Analysis Tool',
   },
-  description: 'Next.js VEDA Template Instance.',
+  description: 'Visual Exploration and Analysis Tool.',
   openGraph: {
-    title: 'Next.js VEDA Template Instance',
-    description: 'Next.js VEDA Template Instance.',
+    title: 'Visual Exploration and Analysis Tool',
+    description: 'Visual Exploration and Analysis Tool.',
     url: baseUrl,
-    siteName: 'Next.js VEDA Template Instance',
+    siteName: 'Visual Exploration and Analysis Tool',
     locale: 'en_US',
     type: 'website',
   },

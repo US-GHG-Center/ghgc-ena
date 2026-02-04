@@ -2085,10 +2085,10 @@
   resolved "https://registry.npmjs.org/@tanstack/table-core/-/table-core-8.21.3.tgz"
   integrity sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==
 
-"@teamimpact/veda-ui@6.19.1":
-  version "6.19.1"
-  resolved "https://registry.yarnpkg.com/@teamimpact/veda-ui/-/veda-ui-6.19.1.tgz#91946d8a10df0162f352ef2f1642db6c4b7e4ee7"
-  integrity sha512-5Kbtsml68aUpueRIeJu/N0l/9nqeZtw4H7jNa6s8ao3WFPSFpmkYM4bvQwk4syk/GAxM4zGBPRClt61HT88dhw==
+"@teamimpact/veda-ui@6.20.5":
+  version "6.20.5"
+  resolved "https://registry.yarnpkg.com/@teamimpact/veda-ui/-/veda-ui-6.20.5.tgz#f6e5b705e2640a08effd667d4b3c5c736b9d6707"
+  integrity sha512-qlB3y6gFBLfFNT2zs4sU0iW8yi+ilHgSGcTwy9GjRWR3uO39d/mIySBGXsseVDeIDLJhNH4JwctlSWXUWe9UzQ==
   dependencies:
     "@codemirror/lang-markdown" "^6.1.1"
     "@codemirror/state" "^6.2.1"
@@ -2161,7 +2161,7 @@
     js-yaml "^4.1.0"
     lodash "^4.17.21"
     mapbox-gl "^3.9.3"
-    mapbox-gl-compare "^0.4.1"
+    mapbox-gl-compare "^0.4.2"
     mapbox-gl-draw-rectangle-mode "^1.0.4"
     markdown-it "^14.0.0"
     optics-ts "^2.4.1"
@@ -6436,10 +6436,10 @@ map-obj@^4.0.0:
   resolved "https://registry.npmjs.org/map-obj/-/map-obj-4.3.0.tgz"
   integrity sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==
 
-mapbox-gl-compare@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/mapbox-gl-compare/-/mapbox-gl-compare-0.4.1.tgz#eb4b951bba33ec254ceb1967267015775df25b9d"
-  integrity sha512-aLE1GK5oZywGwtRWjVnVz50Fudcod6d0tIxl4X5Rv/nhE8Kc64692S37F150amYvOFzzST+ylP25KgM6ApiPRA==
+mapbox-gl-compare@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/mapbox-gl-compare/-/mapbox-gl-compare-0.4.2.tgz#819bddb59569f73d1c78da92f999fcbbd58292e2"
+  integrity sha512-MhKUYJri3KIfeB2rsLUh2JzPutdfehU3vqdfgp2+uocKjNYQwCUvQ0T8u7fBwIJvJKdfWg3FiDq+5oZC4AtAGg==
   dependencies:
     "@mapbox/mapbox-gl-sync-move" "^0.3.1"
 
